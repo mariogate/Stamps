@@ -1,11 +1,20 @@
-const db = require("../models/db");
 const express = require('express');
+const { data } = require('../models/data/store');
 const router = express.Router();
 
 // GET /analytics - fetch usage statistics
 router.get('/', (req, res) => {
-  // TODO: implement analytics retrieval
-  res.json({ message: 'Analytics placeholder' });
+  const totalStamps = data.transactions.filter(t => t.type === 'stamp').length;
+  const totalRedemptions = data.transactions.filter(t => t.type === 'redeem').length;
+  const merchants = data.merchants.length;
+  const customers = data.customers.length;
+
+  res.json({
+    merchants,
+    customers,
+    totalStamps,
+    totalRedemptions,
+  });
 });
 
 module.exports = router;
